@@ -1,9 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.urls import reverse
 
-from .models import Place, Image
+from .models import Place
 
 
 def serialize_point(place):
@@ -34,7 +34,6 @@ def main_page(request):
 
     context = {"points": points}
     rendered_page = template.render(context, request)
-
     return HttpResponse(rendered_page)
 
 
