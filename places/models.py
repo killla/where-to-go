@@ -9,3 +9,11 @@ class Place(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+
+class Image(models.Model):
+    number = models.SmallIntegerField()
+    photo = models.ImageField()
+    place = models.ForeignKey('Place', on_delete=models.CASCADE, verbose_name='Место', related_name='imgs')
+    def __str__(self):
+        return f'{self.number} {self.place}'
