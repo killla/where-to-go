@@ -13,8 +13,12 @@ class Place(models.Model):
 
 
 class Image(models.Model):
-    number = models.SmallIntegerField()
+    number = models.PositiveSmallIntegerField(default=0)
     photo = models.ImageField()
     place = models.ForeignKey('Place', on_delete=models.CASCADE, verbose_name='Место', related_name='imgs')
+
+    class Meta:
+        ordering = ['number']
+
     def __str__(self):
         return f'{self.number} {self.place}'
