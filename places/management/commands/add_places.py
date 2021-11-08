@@ -38,7 +38,7 @@ class Command(BaseCommand):
 
         image_urls = data['imgs']
         if not created:
-            images = place.images.all()
+            images = place.imgs.all()
             images.delete()
 
         for number, url in enumerate(image_urls):
