@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 
 import requests
 from django.core.files.base import ContentFile
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from places.models import Place, Image
 
 
@@ -21,25 +21,19 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         response = requests.get(options['url'])
         response.raise_for_status()
-        data = response.json()
-        title = data['title']
-        description_short = data['description_short']
-        description_long = data['description_long']
-        lng = data['coordinates']['lng']
-        lat = data['coordinates']['lat']
+        payload = response.json()
 
         place, created = Place.objects.update_or_create(
-            title=title,
-            description_short=description_short,
-            description_long=description_long,
-            lng=lng,
-            lat=lat,
+            title=payload['title'],
+            description_short=payload['description_short'],
+            lng=payload['coordinates']['lng'],
+            lat=payload['coordinates']['lat'],
+            defaults={'description_long': payload['description_long']}
         )
 
-        image_urls = data['imgs']
+        image_urls = payload['imgs']
         if not created:
-            images = place.imgs.all()
-            images.delete()
+            place.imgs.all().delete()
 
         for number, url in enumerate(image_urls):
             image = Image.objects.create(place=place, number=number)

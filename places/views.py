@@ -1,6 +1,5 @@
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse, JsonResponse
-from django.template import loader
+from django.shortcuts import get_object_or_404, render
+from django.http import JsonResponse
 from django.urls import reverse
 
 from .models import Place
@@ -16,28 +15,23 @@ def serialize_point(place):
         "properties": {
             "title": place.title,
             "placeId": place.pk,
-            "detailsUrl": reverse(place_by_id, args=[place.pk])
+            "detailsUrl": reverse(get_place, args=[place.pk])
         }
     }
 
 
-def main_page(request):
-    template = loader.get_template('index.html')
+def get_map(request):
     places = Place.objects.all()
-
     points = {
         "type": "FeatureCollection",
         "features": [
             serialize_point(place) for place in places
         ]
     }
-
-    context = {"points": points}
-    rendered_page = template.render(context, request)
-    return HttpResponse(rendered_page)
+    return render(request, 'index.html', context={"points": points})
 
 
-def place_by_id(request, pk):
+def get_place(request, pk):
     place = get_object_or_404(Place, pk=pk)
     point = {
         'title': place.title,
