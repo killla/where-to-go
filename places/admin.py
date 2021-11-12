@@ -5,12 +5,15 @@ from adminsortable2.admin import SortableInlineAdminMixin
 from .models import Place, Image
 
 
-admin.site.register(Image)
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    raw_id_fields = ('place',)
+    autocomplete_fields = ('place',)
 
 
 class ImageInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Image
-    readonly_fields = ["image_preview", ]
+    readonly_fields = ['image_preview', ]
     extra = 0
 
     def image_preview(self, obj):
@@ -19,4 +22,5 @@ class ImageInline(SortableInlineAdminMixin, admin.TabularInline):
 
 @admin.register(Place)
 class PlaceAdmin(admin.ModelAdmin):
+    search_fields = ('title',)
     inlines = [ImageInline, ]
