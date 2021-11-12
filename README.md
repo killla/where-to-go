@@ -40,7 +40,7 @@ python manage.py add_places https://github.com/devmanorg/where-to-go-places/raw/
 `ALLOWED_HOSTS` - список хостов с которых доступен вебсервер django
 
 ### Демонстрация
-Проект доступен по адресу: [killla.pythonanywhere.com](killla.pythonanywhere.com)
+Проект доступен по адресу: [https://killla.pythonanywhere.com](https://killla.pythonanywhere.com)
 
 ### Цель проекта
 Проект написан в целях обучения Django и Vue.
